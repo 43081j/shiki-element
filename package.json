@@ -1,0 +1,25 @@
+{
+  "name": "shiki-element",
+  "version": "0.0.1",
+  "description": "A web component to render code using the Shiki library.",
+  "main": "lib/main.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/43081j/shiki-element.git"
+  },
+  "keywords": [
+    "shiki",
+    "syntax",
+    "highlighting",
+    "highlighter"
+  ],
+  "author": "James Garbutt (https://github.com/43081j)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/43081j/shiki-element/issues"
+  },
+  "homepage": "https://github.com/43081j/shiki-element#readme"
+}
