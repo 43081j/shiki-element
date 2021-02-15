@@ -8,6 +8,8 @@
   "plugins": ["@typescript-eslint"],
   "rules": {
     "indent": "off",
-    "comma-dangle": ["error", "never"]
+    "comma-dangle": ["error", "never"],
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-inferrable-types": "off"
   }
 }
