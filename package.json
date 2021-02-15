@@ -5,7 +5,8 @@
   "main": "lib/shiki-element.js",
   "type": "module",
   "files": [
-    "lib/!(test)"
+    "lib/!(test)",
+    "custom_types/"
   ],
   "scripts": {
     "clean": "rimraf ./lib",
@@ -41,6 +42,7 @@
     "@types/mocha": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^4.15.1",
     "@typescript-eslint/parser": "^4.15.1",
+    "@web/dev-server": "^0.1.7",
     "eslint": "^7.20.0",
     "eslint-config-google": "^0.14.0",
     "mocha": "^8.3.0",

@@ -1,9 +1,9 @@
-import * as shiki from 'shiki';
+import * as shiki from 'shiki/dist/index.browser.mjs';
 
 /**
  * Renders a block of code syntax highlighted using the shiki library.
  */
-export class ShikiCodeElement extends HTMLElement {
+export class ShikiHighlightElement extends HTMLElement {
   protected _observer: MutationObserver;
   protected _highlighter?: shiki.Highlighter;
   protected _options: shiki.HighlighterOptions = {
@@ -52,16 +52,6 @@ export class ShikiCodeElement extends HTMLElement {
   }
 
   /**
-   * Initialises shiki's highlighter
-   *
-   * @return {Promise}
-   */
-  protected async _initialiseHighlighter(): Promise<void> {
-    this._highlighter = await shiki.getHighlighter(this.options);
-    this._render();
-  }
-
-  /**
    * Called when an attribute on the host has changed.
    *
    * @param {string} name Name of the attribute which changed
@@ -84,6 +74,7 @@ export class ShikiCodeElement extends HTMLElement {
    */
   public connectedCallback(): void {
     this._observer.observe(this, {characterData: true, subtree: true});
+    this._initialiseHighlighter();
   }
 
   /**
@@ -91,6 +82,16 @@ export class ShikiCodeElement extends HTMLElement {
    */
   public disconnectedCallback(): void {
     this._observer.disconnect();
+  }
+
+  /**
+   * Initialises shiki's highlighter
+   *
+   * @return {Promise}
+   */
+  protected async _initialiseHighlighter(): Promise<void> {
+    this._highlighter = await shiki.getHighlighter(this.options);
+    this._render();
   }
 
   /**
@@ -125,4 +126,4 @@ export class ShikiCodeElement extends HTMLElement {
   }
 }
 
-window.customElements.define('shiki-code', ShikiCodeElement);
+window.customElements.define('shiki-highlight', ShikiHighlightElement);
