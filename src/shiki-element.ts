@@ -1,3 +1,5 @@
+/// <reference path="../custom_types/shiki.d.ts" />
+
 import * as shiki from 'shiki/dist/index.browser.mjs';
 
 /**
@@ -55,7 +57,7 @@ export class ShikiHighlightElement extends HTMLElement {
   }
 
   /** constructor */
-  constructor() {
+  public constructor() {
     super();
 
     this.attachShadow({mode: 'open'});
@@ -86,7 +88,11 @@ export class ShikiHighlightElement extends HTMLElement {
    * Called when the element is connected to the DOM tree.
    */
   public connectedCallback(): void {
-    this._observer.observe(this, {characterData: true, subtree: true});
+    this._observer.observe(this, {
+      characterData: true,
+      subtree: true,
+      childList: true
+    });
     this._initialiseHighlighter();
   }
 

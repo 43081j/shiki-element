@@ -14,7 +14,6 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": [
-    "src/**/*.ts",
-    "custom_types/*.d.ts"
+    "src/**/*.ts"
   ]
 }

@@ -12,9 +12,9 @@ $ npm i -S shiki-element
 ## Usage
 
 ```html
-<shiki-code>
+<shiki-highlight>
   {
     console.log('Hello world!');
   }
-</shiki-code>
+</shiki-highlight>
 ```
