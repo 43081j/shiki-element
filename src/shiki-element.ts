@@ -6,14 +6,27 @@ import * as shiki from 'shiki/dist/index.browser.mjs';
 export class ShikiHighlightElement extends HTMLElement {
   protected _observer: MutationObserver;
   protected _highlighter?: shiki.Highlighter;
+  protected _language: string = 'js';
   protected _options: shiki.HighlighterOptions = {
     theme: 'nord'
   };
 
   /**
-   * The language we want to highlight/parse
+   * Gets the language we want to highlight
    */
-  public language: string = 'js';
+  public get language(): string {
+    return this._language;
+  }
+
+  /**
+   * Sets the language we want to highlight
+   *
+   * @param {string} val Language to set
+   */
+  public set language(val: string) {
+    this._language = val;
+    this._render();
+  }
 
   /**
    * Gets the options to pass to shiki
