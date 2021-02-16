@@ -140,3 +140,9 @@ export class ShikiHighlightElement extends HTMLElement {
 }
 
 window.customElements.define('shiki-highlight', ShikiHighlightElement);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'shiki-highlight': ShikiHighlightElement;
+  }
+}
