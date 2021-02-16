@@ -2,6 +2,28 @@
 
 import * as shiki from 'shiki/dist/index.browser.mjs';
 
+declare global {
+  interface CSSStyleSheet {
+    replaceSync(contents: string): void;
+  }
+
+  interface ShadowRoot {
+    adoptedStyleSheets: CSSStyleSheet[];
+  }
+}
+
+const stylesheet = new CSSStyleSheet();
+stylesheet.replaceSync(`
+  :host {
+    display: block;
+  }
+
+  pre.shiki {
+    margin: 0;
+    padding: var(--shiki-padding, .4em);
+  }
+`);
+
 /**
  * Renders a block of code syntax highlighted using the shiki library.
  */
@@ -60,7 +82,9 @@ export class ShikiHighlightElement extends HTMLElement {
   public constructor() {
     super();
 
-    this.attachShadow({mode: 'open'});
+    const root = this.attachShadow({mode: 'open'});
+    root.adoptedStyleSheets = [stylesheet];
+
     this._observer = new MutationObserver((mutations) =>
       this._onDomChanged(mutations)
     );
