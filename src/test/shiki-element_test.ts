@@ -1,8 +1,9 @@
 import * as assert from 'uvu/assert';
-import {setCDN} from 'shiki/dist/index.browser.mjs';
+import * as shiki from 'shiki/dist/index.browser.mjs';
 import {ShikiHighlightElement} from '../shiki-element.js';
+import * as hanbi from 'hanbi';
 
-setCDN('/node_modules/shiki/');
+shiki.setCDN('/node_modules/shiki/');
 
 const waitForSelector = (
   node: HTMLElement | DocumentFragment,
@@ -44,6 +45,7 @@ describe('shiki-highlight', () => {
 
   afterEach(() => {
     element.remove();
+    hanbi.restore();
   });
 
   it('should upgrade to the correct element and set defaults', () => {
@@ -87,6 +89,16 @@ describe('shiki-highlight', () => {
 
       element.options = {theme: 'github-light'};
       await waitForFunction(() => element.shadowRoot!.innerHTML !== contents);
+    });
+  });
+
+  describe('CDN', () => {
+    it('should exist', async () => {
+      const descriptor = Object.getOwnPropertyDescriptor(
+        Object.getPrototypeOf(element),
+        'cdn'
+      );
+      assert.ok(descriptor?.set);
     });
   });
 });
