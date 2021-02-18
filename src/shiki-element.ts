@@ -36,6 +36,18 @@ export class ShikiHighlightElement extends HTMLElement {
   };
 
   /**
+   * Sets the CDN for shiki to load resources from.
+   *
+   * This can be local, e.g. "/node_modules".
+   *
+   * @param {string} val CDN path to set
+   */
+  public set cdn(val: string) {
+    shiki.setCDN(val);
+    this._initialiseHighlighter();
+  }
+
+  /**
    * Gets the language we want to highlight
    */
   public get language(): string {
