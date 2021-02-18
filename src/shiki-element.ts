@@ -84,6 +84,7 @@ export class ShikiHighlightElement extends HTMLElement {
 
     const root = this.attachShadow({mode: 'open'});
     root.adoptedStyleSheets = [stylesheet];
+    this._render();
 
     this._observer = new MutationObserver((mutations) =>
       this._onDomChanged(mutations)
@@ -157,7 +158,12 @@ export class ShikiHighlightElement extends HTMLElement {
    * @return {void}
    */
   protected _render(): void {
-    if (!this.shadowRoot || !this._highlighter) {
+    if (!this.shadowRoot) {
+      return;
+    }
+
+    if (!this._highlighter) {
+      this.shadowRoot.innerHTML = '<slot></slot>';
       return;
     }
 
