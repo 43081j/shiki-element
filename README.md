@@ -11,36 +11,10 @@ $ npm i -S shiki-element
 
 ## Usage
 
-First, **you must tell shiki where to load external resources** (e.g. themes
-and languages).
-
-You can do this via `setCDN`:
-
-```js
-// could be 'shiki' if you're using a bundler
-import {setCDN} from 'shiki/dist/index.browser.mjs';
-
-// some path on your server which contains shiki
-setCDN('/node_modules/shiki/');
-
-// or use a CDN
-setCDN('https://unpkg.com/shiki/')
-```
-
-You can then load the `shiki-highlight` element via a script tag:
-
-```html
-<script src="./node_modules/shiki-element/lib/shiki-element.js" type="module">
-</script>
-```
-
-or an import:
+You can load the `shiki-highlight` element by importing it in an ES module:
 
 ```ts
-import 'shiki-element';
-
-// or if you have no bundler/import maps
-import './node_modules/shiki-element/lib/shiki-element.js';
+import 'shiki-element'; // registers the shiki highlight element
 ```
 
 You may then use the element like so:
@@ -51,4 +25,22 @@ You may then use the element like so:
     console.log('Hello world!');
   }
 </shiki-highlight>
+```
+
+You can specify the language:
+
+```html
+<shiki-highlight language="ts">
+...
+</shiki-highlight>
+```
+
+You can specify shiki options via the `options` property:
+
+```ts
+const node = document.querySelector('shiki-highlight');
+node.options = {
+  theme: 'nord',
+  lang: 'ts'
+};
 ```

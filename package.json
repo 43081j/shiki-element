@@ -36,18 +36,18 @@
   },
   "homepage": "https://github.com/43081j/shiki-element#readme",
   "dependencies": {
-    "shiki": "^0.9.2"
+    "shiki": "^1.7.0"
   },
   "devDependencies": {
     "@eslint/js": "^8.57.0",
-    "@types/mocha": "^8.2.0",
+    "@types/mocha": "^10.0.6",
     "@web/test-runner": "^0.18.2",
     "@web/test-runner-puppeteer": "^0.16.0",
     "eslint": "^8.57.0",
-    "hanbi": "^0.4.1",
-    "mocha": "^8.3.0",
-    "prettier": "^2.2.1",
-    "rimraf": "^3.0.2",
+    "hanbi": "^1.0.3",
+    "mocha": "^10.4.0",
+    "prettier": "^3.3.2",
+    "rimraf": "^5.0.7",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.13.0",
     "uvu": "^0.5.1"
