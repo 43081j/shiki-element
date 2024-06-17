@@ -1,5 +1,3 @@
-/// <reference path="../custom_types/shiki.d.ts" />
-
 import * as shiki from 'shiki/dist/index.browser.mjs';
 
 declare global {
