@@ -1,9 +1,8 @@
+import '../shiki-element.js';
+
 import * as assert from 'uvu/assert';
-import * as shiki from 'shiki/dist/index.browser.mjs';
 import {ShikiHighlightElement} from '../shiki-element.js';
 import * as hanbi from 'hanbi';
-
-shiki.setCDN('/node_modules/shiki/');
 
 const waitForSelector = (
   node: HTMLElement | DocumentFragment,
@@ -51,7 +50,8 @@ describe('shiki-highlight', () => {
   it('should upgrade to the correct element and set defaults', () => {
     assert.instance(element, ShikiHighlightElement);
     assert.equal(element.options, {
-      theme: 'nord'
+      theme: 'nord',
+      lang: 'js'
     });
     assert.equal(element.language, 'js');
   });
@@ -73,10 +73,12 @@ describe('shiki-highlight', () => {
     });
 
     it('should trigger render when changed', async () => {
-      element.textContent = 'fn(param: string);';
       element.language = 'ts';
-      await waitForSelector(element.shadowRoot!, 'pre.shiki');
-      assert.is(element.shadowRoot!.textContent!.trim(), 'fn(param: string);');
+      element.textContent = 'fn(param: string);';
+      await waitForFunction(
+        () => element.shadowRoot!.textContent!.trim() === 'fn(param: string);'
+      );
+      assert.ok(element.shadowRoot!.querySelector('pre.shiki'));
     });
   });
 
@@ -87,18 +89,8 @@ describe('shiki-highlight', () => {
 
       const contents = element.shadowRoot!.innerHTML;
 
-      element.options = {theme: 'github-light'};
+      element.options = {theme: 'github-light', lang: 'js'};
       await waitForFunction(() => element.shadowRoot!.innerHTML !== contents);
-    });
-  });
-
-  describe('CDN', () => {
-    it('should exist', async () => {
-      const descriptor = Object.getOwnPropertyDescriptor(
-        Object.getPrototypeOf(element),
-        'cdn'
-      );
-      assert.ok(descriptor?.set);
     });
   });
 });

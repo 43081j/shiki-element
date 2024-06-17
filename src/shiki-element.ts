@@ -1,4 +1,4 @@
-import * as shiki from 'shiki/dist/index.browser.mjs';
+import * as shiki from 'shiki';
 
 declare global {
   interface CSSStyleSheet {
@@ -9,6 +9,8 @@ declare global {
     adoptedStyleSheets: CSSStyleSheet[];
   }
 }
+
+type ShikiHighlightOptions = Parameters<typeof shiki.codeToHtml>[1];
 
 const stylesheet = new CSSStyleSheet();
 stylesheet.replaceSync(`
@@ -27,29 +29,17 @@ stylesheet.replaceSync(`
  */
 export class ShikiHighlightElement extends HTMLElement {
   protected _observer: MutationObserver;
-  protected _highlighter?: shiki.Highlighter;
-  protected _language: string = 'js';
-  protected _options: shiki.HighlighterOptions = {
-    theme: 'nord'
+  protected _highlightedContent?: string;
+  protected _options: ShikiHighlightOptions = {
+    theme: 'nord',
+    lang: 'js'
   };
-
-  /**
-   * Sets the CDN for shiki to load resources from.
-   *
-   * This can be local, e.g. "/node_modules".
-   *
-   * @param {string} val CDN path to set
-   */
-  public set cdn(val: string) {
-    shiki.setCDN(val);
-    this._initialiseHighlighter();
-  }
 
   /**
    * Gets the language we want to highlight
    */
   public get language(): string {
-    return this._language;
+    return this._options.lang;
   }
 
   /**
@@ -58,27 +48,30 @@ export class ShikiHighlightElement extends HTMLElement {
    * @param {string} val Language to set
    */
   public set language(val: string) {
-    this._language = val;
-    this._render();
+    this._options = {
+      ...this._options,
+      lang: val
+    };
+    this._update();
   }
 
   /**
    * Gets the options to pass to shiki
    *
-   * @return {shiki.HighlighterOptions}
+   * @return {ShikiHighlightOptions}
    */
-  public get options(): shiki.HighlighterOptions {
+  public get options(): ShikiHighlightOptions {
     return this._options;
   }
 
   /**
    * Sets the options to pass to shiki
    *
-   * @param {shiki.HighlighterOptions } val Options to set
+   * @param {ShikiHighlightOptions} val Options to set
    */
-  public set options(val: shiki.HighlighterOptions) {
+  public set options(val: ShikiHighlightOptions) {
     this._options = val;
-    this._initialiseHighlighter();
+    this._update();
   }
 
   /**
@@ -128,7 +121,7 @@ export class ShikiHighlightElement extends HTMLElement {
       subtree: true,
       childList: true
     });
-    this._initialiseHighlighter();
+    this._update();
   }
 
   /**
@@ -138,13 +131,32 @@ export class ShikiHighlightElement extends HTMLElement {
     this._observer.disconnect();
   }
 
+  protected _updating?: Promise<void>;
+
   /**
-   * Initialises shiki's highlighter
+   * Queues an async update to rendering
    *
    * @return {Promise}
    */
-  protected async _initialiseHighlighter(): Promise<void> {
-    this._highlighter = await shiki.getHighlighter(this.options);
+  protected async _update(): Promise<void> {
+    if (this._updating) {
+      await this._updating;
+    }
+
+    this._updating = this._triggerUpdate();
+  }
+
+  /**
+   * Triggers an async update to rendering
+   *
+   * @return {Promise}
+   */
+  protected async _triggerUpdate(): Promise<void> {
+    this._highlightedContent = await shiki.codeToHtml(
+      this.textContent ?? '',
+      this.options
+    );
+
     this._render();
   }
 
@@ -159,7 +171,7 @@ export class ShikiHighlightElement extends HTMLElement {
       return;
     }
 
-    this._render();
+    this._update();
   }
 
   /**
@@ -172,16 +184,12 @@ export class ShikiHighlightElement extends HTMLElement {
       return;
     }
 
-    if (!this._highlighter) {
+    if (this._highlightedContent === undefined) {
       this.shadowRoot.innerHTML = '<slot></slot>';
       return;
     }
 
-    const code = this._highlighter.codeToHtml(
-      this.textContent ?? '',
-      this.language
-    );
-    this.shadowRoot.innerHTML = code ?? '';
+    this.shadowRoot.innerHTML = this._highlightedContent;
   }
 }
 
