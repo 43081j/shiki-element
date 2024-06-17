@@ -5,7 +5,8 @@
   "main": "lib/shiki-element.js",
   "type": "module",
   "files": [
-    "lib/!(test)",
+    "lib/",
+    "!lib/test",
     "custom_types/"
   ],
   "scripts": {
