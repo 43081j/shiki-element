@@ -21,6 +21,7 @@ stylesheet.replaceSync(`
   pre.shiki {
     margin: 0;
     padding: var(--shiki-padding, .4em);
+    overflow: var(--shiki-overflow, auto);
   }
 `);
 
