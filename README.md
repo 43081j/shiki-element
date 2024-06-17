@@ -44,3 +44,12 @@ node.options = {
   lang: 'ts'
 };
 ```
+
+### Styling
+
+The following CSS variables are available:
+
+| Name | Default | Summary |
+| -- | -- | -- |
+| `--shiki-padding` | `.4em` | Padding of the inner `pre` tag |
+| `--shiki-overflow` | `auto` | Overflow of the inner `pre` tag |
